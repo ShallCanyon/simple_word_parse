@@ -1,19 +1,25 @@
-#include <fstream>
-#include <iostream>
 #include "wordProcess.h"
 
 int main()
 {
+    WP *wp = new WP();
     std::fstream file;
     file.open("data.dat", std::ios::in);
-    char buf;
-    while(!file.eof())
+    
+    if(file.is_open())
     {
-        //file.getline(buf, 256, '\n');
-        file.get(buf);
-        if(buf!='\n' && buf!='\t')
-            std::cout << buf;
+        wp->preProcess(file);
+        /*std::string line;
+        while (!file.eof())
+        {
+            //file.getline(buf, 256);
+            getline(file, line);
+            //if(line.at(0)!='\n')
+            std::cout << line;
+        }*/
+        printf("\n");
+        file.close();
     }
-    file.close();
+    
     return 0;
 }

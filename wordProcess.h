@@ -1,5 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <istream>
+#include <string>
+#include <vector>
 #include "wordDefine.h"
 
 struct serial
@@ -14,11 +17,11 @@ class WP{
         ~WP();
         bool isDigit(char ch);
         bool isLetter(char ch);
-        void preProcess(FILE *file);
+        void preProcess(std::fstream &stream);
         void process();
 
     private:
-        serial result[1024];
-        char *data;
-        
+        serial *result;
+        std::vector<char> data;
 };
+
