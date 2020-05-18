@@ -9,16 +9,7 @@ int main()
     if(file.is_open())
     {
         wp->preProcess(file);
-        /*std::string line;
-        while (!file.eof())
-        {
-            //file.getline(buf, 256);
-            getline(file, line);
-            //if(line.at(0)!='\n')
-            std::cout << line;
-        }*/
-        printf("\n");
-        file.close();
+        wp->printData();
     }
     
     return 0;

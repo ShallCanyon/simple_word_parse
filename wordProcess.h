@@ -19,6 +19,7 @@ class WP{
         bool isLetter(char ch);
         void preProcess(std::fstream &stream);
         void process();
+        void printData();
 
     private:
         serial *result;
