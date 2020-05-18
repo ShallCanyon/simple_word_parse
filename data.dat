@@ -1,6 +1,6 @@
 
-for
-char ch = 'a';
+
+
 #include <stdio>
 
 int main()

@@ -36,8 +36,14 @@
 #define notEqual 46
 #define logicAnd 47
 #define logicOr 48
-#define _letter 50
-#define _digit 51
-#define _ID 52
-#define _INT 53
-#define _STRING 54
+#define selfPlus 49
+#define selfMinus 50
+#define pointer 51
+#define refer 52
+#define sign 53
+
+#define _letter 60
+#define _digit 61
+#define _ID 62
+#define _INT 63
+#define _STRING 64

@@ -25,7 +25,9 @@ class WP{
         bool isDigit(char ch);
         bool isLetter(char ch);
         bool setKeyword(std::vector<char>::iterator &iter,
-                std::string keyword, unsigned int length, int define);
+                std::string keyword, int define);
+        bool iterPeek(std::vector<char>::iterator &iter, 
+            const std::vector<char>::iterator end, char &ret);
 
     private:
         std::vector<serial> result;
