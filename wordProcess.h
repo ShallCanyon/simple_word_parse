@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <istream>
 #include <string>
 #include <vector>
 #include "wordDefine.h"
@@ -16,16 +15,17 @@ class WP{
     public:
         WP();
         ~WP();
-        void preProcess(std::fstream &stream);
+        void preProcess(std::ifstream &stream);
         void process();
         void printData();
         void printResult();
+        void outputData(std::ofstream &ostream);
 
     protected:
-        bool isDigit(char ch);
-        bool isLetter(char ch);
+        bool isDigit(const char ch);
+        bool isLetter(const char ch);
         bool setKeyword(std::vector<char>::iterator &iter,
-                std::string keyword, int define);
+                const std::string keyword, const int define);
         bool iterPeek(std::vector<char>::iterator &iter, 
             const std::vector<char>::iterator end, char &ret);
 

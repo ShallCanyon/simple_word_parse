@@ -63,5 +63,9 @@
         "variant": "cpp"
     },
     "code-runner.clearPreviousOutput": true,
-    "code-runner.saveAllFilesBeforeRun": true
+    "code-runner.saveAllFilesBeforeRun": true,
+    "code-runner.executorMap": {
+        "cpp": "cd $dir && g++ *.cpp -o filePhrase && $dirfilePhrase"
+    },
+    "code-runner.runInTerminal": true
 }

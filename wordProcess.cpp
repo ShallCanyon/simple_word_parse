@@ -11,8 +11,7 @@ WP::~WP()
 }
 
 /*	
-	peek for next data in vector 
-	while not move the pointer of iterator,
+	peek for next data in vector while not move the pointer of iterator,
 	return true if next iterator don't reach the end,
 	vice versa
 */
@@ -30,8 +29,9 @@ bool WP::iterPeek(std::vector<char>::iterator &iter, const std::vector<char>::it
 		return false;
 	}
 }
+
 /* skip waste line breaks ,tabs, annotations and whitespaces */
-void WP::preProcess(std::fstream &stream)
+void WP::preProcess(std::ifstream &stream)
 {
     bool inAnnotation = false;
     bool inString = false;
@@ -49,7 +49,6 @@ void WP::preProcess(std::fstream &stream)
                 if (stream.peek() == '*')
                 {
                     inAnnotation = true;
-                    //printf("\ninAnnotation: %d\n", inAnnotation);
                     // skip '/'
                     stream.get();
                     // skip '*'
@@ -68,7 +67,6 @@ void WP::preProcess(std::fstream &stream)
             if (inAnnotation && stream.peek() == '/')
             {
                 inAnnotation = false;
-                //printf("\ninAnnotation: %d\n", inAnnotation);
                 // skip '*'
                 stream.get();
                 // skip '/'
@@ -76,24 +74,15 @@ void WP::preProcess(std::fstream &stream)
             }
             break;
         /* mark in string */
-        /* WARN: the ' only be detected once */
         case '\'':
         case '\"':
             if(!inAnnotation)
-            {
                 inString = !inString;
-                /*if (inString)
-                    inString = false;
-                else
-                    inString = true;*/
-                //printf("\ninString: %d\n", inString);
-            }
             break;
         /* skip white spaces */
         case ' ':
             if (!inAnnotation && !inString && ch == ' ')
             {
-                /* WARN: wrong whitespace skip cause weird result */
                 /* skip to last whitespace */
                 while (stream.peek() == ' ')
                     stream.get();
@@ -103,58 +92,8 @@ void WP::preProcess(std::fstream &stream)
         default:
             break;
         }
-
-        /*if(ch=='/' && !inAnnotation)
-        {
-            
-            if(stream.peek()=='*')
-            {
-                inAnnotation = true;
-                printf("\ninAnnotation: %d\n", inAnnotation);
-                stream.get();
-                stream.get(ch);
-                printf("---/* detected---");
-            }
-            else if (stream.peek() == '/')
-            {
-                while(ch!='\n')
-                    stream.get(ch);
-                // skip the last \n to save tiny time
-                stream.get(ch);
-            }
-        }
-        if(ch=='*' && inAnnotation)
-        {
-            if(stream.peek()=='/')
-            {
-                inAnnotation = false;
-                printf("\ninAnnotation: %d\n", inAnnotation);
-                stream.get();
-                stream.get(ch);
-            }
-        }
-        
-        if(!inAnnotation && (ch=='\"' || ch=='\''))
-        {
-            //inString = !inString;
-            if(inString)
-                inString = false;
-            else
-                inString = true;
-            printf("\ninString: %d\n", inString);
-            //printf("\ninString: %d\n", inString);
-        }
-        
-        if(!inAnnotation && !inString && ch==' ')
-        {
-            while(ch==' ')
-                stream.get(ch);
-        }
-        */
-
         /* skip line breaks and tabs */
         if (ch != '\n' && ch != '\t' && !inAnnotation)
-            //std::cout << ch;
             data.push_back(ch);
     }
 }
@@ -182,7 +121,15 @@ void WP::printResult()
     std::cout << std::endl;
 }
 
-bool WP::isDigit(char ch)
+void WP::outputData(std::ofstream &ostream)
+{
+	for (auto iter = result.begin(); iter != result.end(); iter++)
+	{
+		ostream << "< " << iter->syn << ",  " << iter->token << " >\n";
+	}
+}
+
+	bool WP::isDigit(const char ch)
 {
 	if (ch >= '0' && ch <= '9')
         return true;
@@ -190,7 +137,7 @@ bool WP::isDigit(char ch)
         return false;
 }
 
-bool WP::isLetter(char ch)
+bool WP::isLetter(const char ch)
 {
     if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
         return true;
@@ -199,7 +146,7 @@ bool WP::isLetter(char ch)
 }
 
 bool WP::setKeyword(std::vector<char>::iterator &iter,
-                   std::string keyword, int define)
+                   const std::string keyword, const int define)
 {
     serial temp;
     int step = 0;
@@ -234,7 +181,7 @@ bool WP::setKeyword(std::vector<char>::iterator &iter,
     return match;
 }
 
-    void WP::process()
+void WP::process()
 {
     bool inQuote = false;
     for (auto iter = data.begin(); iter != data.end(); iter++)
@@ -268,41 +215,61 @@ bool WP::setKeyword(std::vector<char>::iterator &iter,
             /* find keywords */
             switch(*iter)
             {
-                /* if, include, int */
-                case 'i':
-                    if (!(setKeyword(iter, "if", _if) ||
-                        setKeyword(iter, "include", _include) ||
-                        setKeyword(iter, "int", _int)))
-                        isKeyword = false;
-                    break;
-                /* char */
-                case 'c':
-                    isKeyword = setKeyword(iter, "char", _char);
-                    break;
-                /* else */
+				/* bool */
+				case 'b':
+					isKeyword = setKeyword(iter, "bool", _bool);
+					break;
+				/* char, const and class */
+				case 'c':
+					if (!(setKeyword(iter, "char", _char) ||
+						  setKeyword(iter, "const", _const) ||
+						  setKeyword(iter, "class", _class)))
+						isKeyword = false;
+					break;
+				/* double */
+				case 'd':
+					isKeyword = setKeyword(iter, "double", _double);
+					break;
+				/* else */
                 case 'e':
                     isKeyword = setKeyword(iter, "else", _else);
                     break;
-                /* main */
+				/* for */
+				case 'f':
+					isKeyword = setKeyword(iter, "for", _for);
+					break;
+				/* if, include, int */
+				case 'i':
+					if (!(setKeyword(iter, "if", _if) ||
+						  setKeyword(iter, "include", _include) ||
+						  setKeyword(iter, "int", _int)))
+						isKeyword = false;
+					break;
+				/* main */
                 case 'm':
                     isKeyword = setKeyword(iter, "main", _main);
-                    break;
-                /* for */
-                case 'f':
-                    isKeyword = setKeyword(iter, "for", _for);
-                    break;
-                /* while */
-                case 'w':
-                    isKeyword = setKeyword(iter, "while", _while);
                     break;
                 /* return */
                 case 'r':
                     isKeyword = setKeyword(iter, "return", _return);
                     break;
-                default:
+				/* string, struct */
+				case 's':
+					if(!(setKeyword(iter, "string", _string)||setKeyword(iter, "struct", _struct)))
+						isKeyword = false;
+					break;
+				/* void */
+				case 'v':
+					isKeyword = setKeyword(iter, "void", _void);
+					break;
+				/* while */
+				case 'w':
+					isKeyword = setKeyword(iter, "while", _while);
+					break;
+				default:
                     isKeyword = false;
                     break;
-            }
+			}
             
             /* TODO: letter(letter|digit)* */
             if (!isKeyword)
@@ -367,19 +334,6 @@ bool WP::setKeyword(std::vector<char>::iterator &iter,
 				break;
 			/* assign or equal */
 			case '=':
-				/*if(*(++iter)=='=')
-				{
-					temp.syn = equal;
-					temp.token = "==";
-					result.push_back(temp);
-				}
-				else
-				{
-					iter--;
-					temp.syn = assign;
-					temp.token = "=";
-					result.push_back(temp);
-				}*/
 				if(iterPeek(iter, data.end(), ch) && ch == '=')
 				{
 					temp.syn = equal;

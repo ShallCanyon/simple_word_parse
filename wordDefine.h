@@ -1,13 +1,20 @@
 #define _main 1
 #define _int 2
 #define _char 3
-#define _if 4
-#define _else 5
-#define _for 6
-#define _while 7
-#define _return 8
-#define _void 9
-#define _include 10
+#define _bool 4
+#define _double 5
+#define _string 6
+#define _if 7
+#define _else 8
+#define _for 9
+#define _while 10
+#define _return 11
+#define _void 12
+#define _include 13
+#define _struct 14
+#define _class 15
+#define _const 16
+
 #define assign 21
 #define plus 22
 #define minus 23
