@@ -1,6 +1,6 @@
 
-
-
+for
+char ch = 'a';
 #include <stdio>
 
 int main()
@@ -14,6 +14,8 @@ int main()
 		printf(ch++); /* print 10 characters */
 		if(i     ==      4)
 			printf("\nThis is blank\n");
+        else
+            printf("\n");
 		i = i + 1;
 	}
 	return 0;

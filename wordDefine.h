@@ -7,6 +7,7 @@
 #define _while 7
 #define _return 8
 #define _void 9
+#define _include 10
 #define assign 21
 #define plus 22
 #define minus 23

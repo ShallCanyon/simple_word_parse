@@ -10,6 +10,8 @@ int main()
     {
         wp->preProcess(file);
         wp->printData();
+        wp->process();
+        wp->printResult();
     }
     
     return 0;

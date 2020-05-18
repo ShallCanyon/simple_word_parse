@@ -8,21 +8,27 @@
 struct serial
 {
     int syn;
-    char token[64];
+    //char token[64];
+    std::string token;
 };
 
 class WP{
     public:
         WP();
         ~WP();
-        bool isDigit(char ch);
-        bool isLetter(char ch);
         void preProcess(std::fstream &stream);
         void process();
         void printData();
+        void printResult();
+
+    protected:
+        bool isDigit(char ch);
+        bool isLetter(char ch);
+        bool setKeyword(std::vector<char>::iterator &iter,
+                std::string keyword, unsigned int length, int define);
 
     private:
-        serial *result;
+        std::vector<serial> result;
         std::vector<char> data;
 };
 
