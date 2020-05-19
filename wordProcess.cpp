@@ -93,8 +93,8 @@ void WP::preProcess(std::ifstream &stream)
             break;
         }
         /* skip line breaks and tabs */
-        if (ch != '\n' && ch != '\t' && !inAnnotation)
-            data.push_back(ch);
+		if (ch != '\n' && ch != '\t' && ch != '\r' && !inAnnotation)
+			data.push_back(ch);
     }
 }
 
