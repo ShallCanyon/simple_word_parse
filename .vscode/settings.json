@@ -65,7 +65,7 @@
     "code-runner.clearPreviousOutput": true,
     "code-runner.saveAllFilesBeforeRun": true,
     "code-runner.executorMap": {
-        "cpp": "cd $dir && g++ *.cpp -o filePhrase && $dirfilePhrase"
+        "cpp": "cd $dir && g++ *.cpp -o fileParse && $dirfileParse"
     },
     "code-runner.runInTerminal": true
 }

@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     if(file.is_open())
     {
         wp->preProcess(file);
-        wp->printData();
+        //wp->printData();
         wp->process();
         if(!outfile.is_open())
             wp->printResult();

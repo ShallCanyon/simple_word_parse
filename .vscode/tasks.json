@@ -7,9 +7,9 @@
             "args": [
                 "-g",
                 "${fileDirname}/wordProcess.cpp",
-                "${fileDirname}/filePhrase.cpp",
+                "${fileDirname}/fileParse.cpp",
                 "-o",
-                "${fileDirname}/filePhrase"
+                "${fileDirname}/fileParse"
             ],
             "options": {
                 "cwd": "/usr/bin"
